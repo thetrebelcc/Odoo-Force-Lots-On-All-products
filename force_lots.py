@@ -15,6 +15,13 @@ models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(odoo_url))
 # Search for all products in the database
 product_ids = models.execute_kw(odoo_db, uid, odoo_password, 'product.template', 'search', [[]])
 
-# Iterate over the products and set the `use_lot` field to True
+print("Found {} products".format(len(product_ids)))
+
+# Set all products to use lot codes
 for product_id in product_ids:
-    models.execute_kw(odoo_db, uid, odoo_password, 'product.template', 'write', [[product_id], {'use_lot': True}])
+    models.execute_kw(db, uid, password, 'product.template', 'write', [[product_id], {'tracking': 'lot'}])
+    print("Set product {} to use lot codes".format(product_id))
+    
+
+print("All products have been set to use lot codes!")
+
